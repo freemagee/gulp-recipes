@@ -1,0 +1,13 @@
+{
+  "name": "gulp-image-optimiser",
+  "version": "1.0.0",
+  "description": "Bulk image optimiser (jpg, png, gif, svg)",
+  "main": "gulpfile.js",
+  "author": "Neil Magee",
+  "license": "ISC",
+  "devDependencies": {
+    "gulp": "^3.9.1",
+    "gulp-clean": "^0.4.0",
+    "gulp-imagemin": "^4.1.0"
+  }
+}
