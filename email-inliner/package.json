@@ -1,0 +1,19 @@
+{
+  "name": "gulp-email-inliner",
+  "version": "1.0.0",
+  "description": "A workflow to inline CSS into a HTML file, and remove any unnecessary CSS as well.",
+  "author": "Neil Magee",
+  "license": "ISC",
+  "main": "gulpfile.js",
+  "devDependencies": {
+    "gulp": "^3.9.1",
+    "gulp-clean": "^0.4.0",
+    "gulp-concat": "^2.6.1",
+    "gulp-imagemin": "^4.1.0",
+    "gulp-premailer": "^0.4.0",
+    "gulp-processhtml": "^1.2.0",
+    "gulp-rename": "^1.4.0",
+    "gulp-uncss": "^1.0.6",
+    "gulp-zip": "^4.2.0"
+  }
+}
