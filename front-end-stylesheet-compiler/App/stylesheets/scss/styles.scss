@@ -1,0 +1,15 @@
+$color__bg: lightgreen;
+$color__text: green;
+
+body {
+    margin: 0;
+    padding: 1em;
+    font-size: 100%;
+    background-color: $color__bg;
+}
+
+p {
+    font-size: 2em;
+    font-family: 'Calibri', sans-serif;
+    color: $color__text;
+}
