@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Output</title>
+  <link href="./style/bootstrap-reboot.min.css" rel="stylesheet" />
+  <link href="./style/github-markdown.css" rel="stylesheet" />
+  <link href="./style/prism.css" rel="stylesheet" />
+  <style>
+    .markdown-body {
+      box-sizing: border-box;
+      min-width: 200px;
+      max-width: 980px;
+      margin: 0 auto;
+      padding: 45px;
+    }
+
+    @media (max-width: 767px) {
+      .markdown-body {
+        padding: 15px;
+      }
+    }
+  </style>
+  <script src="./js/prism.js"></script>
+</head>
+<body>
+  <article class="markdown-body"><p>Here are some code samples</p>
+<pre><code class="language-php">&lt;?php phpinfo() ?&gt;</code></pre>
+<p>And some more</p>
+<pre><code class="language-javascript">module.exports = {
+  &quot;parserOptions&quot;: {
+    &quot;ecmaVersion&quot;: 6
+  },
+  &quot;env&quot;: {
+    &quot;browser&quot;: true,
+    &quot;node&quot;: true
+  },
+  &quot;extends&quot;: [
+    &quot;airbnb-base&quot;,
+    &quot;prettier&quot;
+  ],
+  &quot;plugins&quot;: [
+    &quot;import&quot;,
+    &quot;prettier&quot;
+  ],
+  &quot;rules&quot;: {
+    &quot;prettier/prettier&quot;: &quot;error&quot;,
+    &quot;linebreak-style&quot;: 0,
+    &quot;no-use-before-define&quot;: [&quot;error&quot;, { &quot;functions&quot;: false, &quot;classes&quot;: false }],
+    &quot;no-plusplus&quot;: [&quot;error&quot;, { &quot;allowForLoopAfterthoughts&quot;: true }],
+    &quot;no-restricted-imports&quot;: [&quot;error&quot;, &quot;fs&quot;]
+  },
+  &quot;globals&quot;: {}
+};</code></pre>
+</article>
+</body>
+</html>
