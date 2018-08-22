@@ -1,38 +1,11 @@
-## Front-end stylesheet compiler
+## Front-end compiler
 
-This task is meant to compile and serve scss based assets with browser reload showing new changes
+This task is meant to compile and serve front-end assets with browser reload showing new changes
 
-### Requirements
+### WIP
 
-Put your source files in `/App`. The gulp task is expecting scss files to exist in `/App/stylesheets/scss`. See **config** for how to amend this.
+This is a non working gulpfile as of 2018-08-22
 
-### Installation and usage
+### Reasons
 
-```
-npm install
-gulp compile-sass
-gulp watch
-gulp serve
-```
-
-#### Output
-
-Output css files should appear in `/App/stylesheets/css`
-
-## Config
-
-You can modify the settings in the `gulpfile.js` to change source paths. Look for:
-
-```javascript
-var basePaths = {
-    src: './app/',
-    dest: './app/'
-};
-var paths = {
-    styles: {
-        src: basePaths.src + 'stylesheets/scss',
-        files: basePaths.src + 'stylesheets/scss/**/*.scss',
-        dest: basePaths.src + 'stylesheets/css'
-    }
-};
-```
+Exploring writing the gulpfile with ES6 and using the features of Gulp 4.x. This particular gulp recipe has better error handling and debug information for use in the console.
