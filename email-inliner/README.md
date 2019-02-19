@@ -2,6 +2,16 @@
 
 Useful for services such as Campaign Monitor
 
+## Recent Changes
+
+*2019-02-19*
+Upgraded to use Gulp 4.0.x
+Use ES6 JavaScript syntax
+
+#### Still to do
+
+Might need an additional task to also embed CSS into email template. Emails generated from this test seem to have trouble with their background colours.
+
 ### Requirements
 
 Create two folders in root - src and output. Follow this structure for the template and it's assets:
@@ -46,6 +56,6 @@ gem install nokogiri
 Output files should appear in /output as:
 
 ```
-/output/{name of file}-inline.html
+/output/{name of file}-inlined.html
 /output/img.zip
 ```
