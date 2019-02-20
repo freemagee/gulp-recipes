@@ -201,10 +201,10 @@ function devStyles() {
   );
 }
 
-const processDevStyles = gulp.series(devStyles);
+// const processDevStyles = gulp.series(devStyles);
 
-processDevStyles.description = "Convert SCSS to CSS with sourcemap";
-gulp.task("processDevStyles", processDevStyles);
+// processDevStyles.description = "Convert SCSS to CSS with sourcemap";
+// gulp.task("processDevStyles", processDevStyles);
 
 // WATCH
 // ============================================================================
@@ -216,7 +216,7 @@ function watchFiles() {
       {
         delay: 300
       },
-      gulp.series("processDevStyles")
+      gulp.series(devStyles)
     )
     .on("change", evt => {
       changeEvent(evt, "changed");
@@ -231,17 +231,12 @@ gulp.task("watch", watch);
 // BROWSER SYNC
 // ============================================================================
 
-const startSync = () => {
+function startSync() {
   browserSync.init({
     // baseDir: "./dev/"
     proxy: "http://localhost:5001/"
   });
-};
-
-const sync = gulp.series(startSync);
-
-sync.description = "Start a browser sync session";
-gulp.task("sync", sync);
+}
 
 // BUILD SERVER
 // ============================================================================
@@ -303,10 +298,20 @@ function prepareDev() {
 
 const develop = gulp.series(
   prepareDev,
-  processDevStyles,
+  devStyles,
   devServer,
-  gulp.parallel(watch, sync)
+  gulp.parallel(watchFiles, startSync)
 );
 
 develop.description = "Serve and watch assets";
 gulp.task("develop", develop);
+
+// BUILD
+// ============================================================================
+
+// const build = gulp.series(
+//   buildServer
+// );
+
+// build.description = "Build!!";
+// gulp.task("build", build);
