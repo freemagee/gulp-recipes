@@ -1,0 +1,32 @@
+$color__bg: lightgreen;
+$color__headline: green;
+$color__text: #111;
+
+body {
+  margin: 0;
+  padding: 1em 25%;
+  font-size: 100%;
+  font-family: 'Montserrat', sans-serif;
+  background-color: $color__bg;
+}
+
+h1 {
+  margin: 0;
+  font-size: 3em;
+  color: $color__headline;
+}
+
+p {
+  font-size: 1.25em;
+  color: $color__text;
+}
+
+ul {
+  padding: 0 0 0 1.5em;
+  margin: 0;
+}
+
+li {
+  font-size: 1.25em;
+  color: $color__text;
+}
