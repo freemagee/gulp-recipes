@@ -22,10 +22,11 @@ import http from "http";
 
 // Browsersync init
 browserSync.create();
+
 // Common paths
 const assetPaths = {
   src: "./src",
-  temp: "./tmp",
+  temp: "./temp",
   dest: "./build",
   dev: "./dev"
 };
@@ -37,9 +38,8 @@ const paths = {
   styles: {
     src: `${assetPaths.src}/scss`,
     files: `${assetPaths.src}/scss/**/*.scss`,
-    dest: `${assetPaths.dest}/static/css`,
-    temp: `${assetPaths.temp}/css`,
-    dev: `${assetPaths.dev}/css`
+    temp: `${assetPaths.temp}/static/css`,
+    dev: `${assetPaths.dev}/static/css`
   },
   manifest: `${assetPaths.dest}/asset-manifest.json`
 };
@@ -103,29 +103,69 @@ const changeEvent = (path, type) => {
 // REVISIONS
 // ============================================================================
 
-function revisions() {
+function generateManifest() {
+  return gulp
+    .src([`${paths.styles.temp}/*.css`], { base: "temp" })
+    .pipe(rev())
+    .pipe(gulp.dest(`${assetPaths.dest}`))
+    .pipe(rev.manifest("asset-manifest.json"))
+    .pipe(gulp.dest(`${assetPaths.dest}`));
+}
+
+function updateFromManifest() {
   const manifest = gulp.src(paths.manifest);
 
   return gulp
-    .src(`${templatePaths.src}/index.html`)
+    .src(`${assetPaths.dest}/index.html`)
     .pipe(revReplace({ manifest }))
-    .pipe(gulp.dest(templatePaths.dest));
+    .pipe(gulp.dest(assetPaths.dest));
 }
 
-const reviseAssets = gulp.series(revisions);
+const revise = gulp.series(generateManifest, updateFromManifest);
 
-reviseAssets.description =
-  "Update static assets with revision hash from assets-manifest.json";
-gulp.task("reviseAssets", reviseAssets);
+revise.description =
+  "Generate manifest json and update static assets with revision hash";
+gulp.task("revise", revise);
 
-// SASS
+// PROCESS STYLES FOR BUILD
 // ============================================================================
 
 function buildStyles() {
-  const processors = [fontMagician(fontMagicianConfig), postcssPresetEnv(), cssnano()];
+  const processors = [
+    fontMagician(fontMagicianConfig),
+    postcssPresetEnv(),
+    cssnano()
+  ];
 
-  // Delete our old css files
-  del(`${assetPaths.dest}/static/css`);
+  // Taking the path from the paths object
+  return (
+    gulp
+      .src(paths.styles.files)
+      // Deal with errors, but prevent Gulp from stopping
+      .pipe(
+        plumber({
+          errorHandler: reportError
+        })
+      )
+      // Sass
+      .pipe(sass())
+      // Process with PostCSS - autoprefix & minify
+      .pipe(postcss(processors))
+      // Finally output a css file
+      .pipe(gulp.dest(paths.styles.temp))
+  );
+}
+
+const processBuildStyles = gulp.series(buildStyles);
+
+processBuildStyles.description = "Convert SCSS to CSS, minify, no-sourcemap";
+gulp.task("processBuildStyles", processBuildStyles);
+
+// PROCESS STYLES FOR DEVELOPMENT
+// ============================================================================
+
+function devStyles() {
+  const processors = [fontMagician(fontMagicianConfig), postcssPresetEnv()];
 
   // Taking the path from the paths object
   return (
@@ -142,54 +182,8 @@ function buildStyles() {
       .pipe(sass())
       // Process with PostCSS - autoprefix & minify
       .pipe(postcss(processors))
-
-      .pipe(rev())
-      // Write out the source map to the same dir
-      .pipe(sourcemaps.write("."))
-      // Finally output a css file
-      .pipe(gulp.dest(paths.styles.dest))
-
-      .pipe(
-        rev.manifest("asset-manifest.json", {
-          base: "static"
-        })
-      )
-
-      .pipe(gulp.dest(paths.styles.dest))
-      // Inject into browser
-      .pipe(
-        browserSync.stream({
-          match: "**/*.css"
-        })
-      )
-  );
-}
-
-const processBuildStyles = gulp.series(buildStyles);
-
-processBuildStyles.description = "Convert SCSS to CSS, minify, no-sourcemap";
-gulp.task("processBuildStyles", processBuildStyles);
-
-function devStyles() {
-  const processors = [fontMagician(fontMagicianConfig), postcssPresetEnv()];
-
-  // Delete our old css files
-  del(paths.styles.temp);
-
-  // Taking the path from the paths object
-  return (
-    gulp
-      .src(paths.styles.files)
-      // Deal with errors, but prevent Gulp from stopping
-      .pipe(
-        plumber({
-          errorHandler: reportError
-        })
-      )
-      // Sass
-      .pipe(sass())
-      // Process with PostCSS - autoprefix & minify
-      .pipe(postcss(processors))
+      // Add the source map inline
+      .pipe(sourcemaps.write())
       // Finally output a css file
       .pipe(gulp.dest(paths.styles.dev))
       // Inject into browser
@@ -200,11 +194,6 @@ function devStyles() {
       )
   );
 }
-
-// const processDevStyles = gulp.series(devStyles);
-
-// processDevStyles.description = "Convert SCSS to CSS with sourcemap";
-// gulp.task("processDevStyles", processDevStyles);
 
 // WATCH
 // ============================================================================
@@ -225,7 +214,7 @@ function watchFiles() {
 
 const watch = gulp.series(watchFiles);
 
-watch.description = "Keep an eye on asset changes";
+watch.description = "Watch file changes in /src";
 gulp.task("watch", watch);
 
 // BROWSER SYNC
@@ -241,7 +230,7 @@ function startSync() {
 // BUILD SERVER
 // ============================================================================
 
-function buildServer() {
+function serveBuild() {
   return new Promise(resolve => {
     const server = http.createServer((request, response) =>
       handler(request, response, {
@@ -256,6 +245,11 @@ function buildServer() {
     resolve();
   });
 }
+
+const serve = gulp.series(serveBuild);
+
+serve.description = "Serve /build";
+gulp.task("serve", serve);
 
 // DEV SERVER
 // ============================================================================
@@ -273,6 +267,36 @@ function devServer() {
     });
 
     resolve();
+  });
+}
+
+// POST BUILD
+// ============================================================================
+
+function postBuild() {
+  return new Promise(resolve => {
+    // Delete /temp & /dev
+    del([assetPaths.temp, assetPaths.dev]).then(() => {
+      // Resolve promise
+      resolve();
+    });
+  });
+}
+
+// PREPARE BUILD
+// ============================================================================
+
+function preBuild() {
+  return new Promise(resolve => {
+    // Delete /build
+    del([assetPaths.dest, assetPaths.temp]).then(() => {
+      // Copy template file to /build
+      gulp
+        .src(`${templatePaths.src}/index.html`)
+        .pipe(gulp.dest(assetPaths.dest));
+      // Resolve promise
+      resolve();
+    });
   });
 }
 
@@ -303,15 +327,13 @@ const develop = gulp.series(
   gulp.parallel(watchFiles, startSync)
 );
 
-develop.description = "Serve and watch assets";
+develop.description = "Serve /dev, process and watch assets";
 gulp.task("develop", develop);
 
 // BUILD
 // ============================================================================
 
-// const build = gulp.series(
-//   buildServer
-// );
+const build = gulp.series(preBuild, buildStyles, revise, postBuild);
 
-// build.description = "Build!!";
-// gulp.task("build", build);
+build.description = "Create production ready build";
+gulp.task("build", build);
