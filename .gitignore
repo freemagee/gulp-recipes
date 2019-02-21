@@ -60,3 +60,7 @@ jspm_packages
 
 # Optional npm cache directory
 .npm
+
+# Task specific
+front-end-compiler/single-file/dev
+front-end-compiler/single-file/build
