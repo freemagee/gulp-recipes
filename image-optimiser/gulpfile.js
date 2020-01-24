@@ -1,19 +1,21 @@
-var gulp = require("gulp");
-var clean = require("gulp-clean");
-var imagemin = require("gulp-imagemin");
-var options = {
+const gulp = require("gulp");
+const clean = require("gulp-clean");
+const imagemin = require("gulp-imagemin");
+const options = {
   progressive: true
 };
 
-gulp.task("cleaninit", function() {
-  return gulp.src("./dest", { read: false }).pipe(clean());
-});
+function cleanInit() {
+  return gulp.src("./output/*", { read: false }).pipe(clean());
+}
 
-gulp.task("optim", ["cleaninit"], function() {
+function processImages() {
   return gulp
     .src("./src/*")
     .pipe(imagemin(options))
     .pipe(gulp.dest("./output"));
-});
+}
 
-gulp.task("default", ["optim"]);
+const defaultTask = gulp.series(cleanInit, processImages);
+
+exports.default = defaultTask;
