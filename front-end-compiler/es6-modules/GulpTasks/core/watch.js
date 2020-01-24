@@ -1,6 +1,6 @@
 import { watch, series } from "gulp";
 import notify from "gulp-notify";
-import paths from "../paths";
+import { paths } from "../config";
 import styles from "./styles";
 
 // A change event function, displays which file changed
@@ -11,7 +11,7 @@ const changeEvent = (path, type) => {
 
 const watcher = () => {
   watch(
-    paths.styles.files,
+    paths.core.files,
     {
       delay: 500
     },

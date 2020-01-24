@@ -1,6 +1,7 @@
-import fontMagician from "postcss-font-magician";
 import postcssPresetEnv from "postcss-preset-env";
 import cssnano from "cssnano";
+import pxtorem from "postcss-pxtorem";
+import fontMagician from "postcss-font-magician";
 
 const fontMagicianConfig = {
   variants: {
@@ -19,12 +20,21 @@ const fontMagicianConfig = {
   foundries: "google",
   protocol: "https:"
 };
-const build = [fontMagician(fontMagicianConfig), postcssPresetEnv(), cssnano()];
-const dev = [fontMagician(fontMagicianConfig), postcssPresetEnv()];
-
+const nanoOptions = {
+  zindex: false
+};
+const pxToRemOptions = {
+  replace: false,
+  propList: ["font-size"]
+};
+const core = [
+  pxtorem(pxToRemOptions),
+  postcssPresetEnv(),
+  cssnano(nanoOptions),
+  fontMagician(fontMagicianConfig)
+];
 const processors = {
-  build,
-  dev
+  core
 };
 
 export default processors;

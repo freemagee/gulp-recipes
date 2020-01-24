@@ -1,0 +1,47 @@
+{
+  "name": "frontend-compiler",
+  "version": "2.0.0",
+  "description": "Compile frontend source assets",
+  "private": true,
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "dependencies": {
+    "@babel/core": "^7.4.5",
+    "@babel/preset-env": "^7.4.5",
+    "@babel/register": "^7.4.4",
+    "ansi-colors": "^4.1.1",
+    "beeper": "^2.0.0",
+    "browser-sync": "^2.26.7",
+    "browserslist": "^4.6.6",
+    "cssnano": "^4.1.10",
+    "del": "^5.0.0",
+    "eslint": "^6.1.0",
+    "eslint-config-airbnb-base": "^14.0.0",
+    "eslint-config-prettier": "^6.0.0",
+    "eslint-plugin-prettier": "^3.1.0",
+    "gulp": "^4.0.2",
+    "gulp-notify": "^3.2.0",
+    "gulp-plumber": "^1.2.1",
+    "gulp-postcss": "^8.0.0",
+    "gulp-sass": "^4.0.2",
+    "gulp-sourcemaps": "^2.6.5",
+    "postcss-font-magician": "^2.2.2",
+    "postcss-import": "^12.0.1",
+    "postcss-preset-env": "^6.7.0",
+    "postcss-pxtorem": "^4.0.1",
+    "prettier": "^1.18.2"
+  },
+  "eslintConfig": {
+    "extends": [
+      "airbnb-base",
+      "prettier"
+    ]
+  },
+  "browserslist": [
+    "defaults"
+  ],
+  "devDependencies": {
+    "eslint-plugin-import": "^2.18.2"
+  }
+}
