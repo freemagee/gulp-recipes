@@ -1,6 +1,6 @@
 {
   "name": "markdown-to-html",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Convert markdown files to static HTML",
   "main": "gulpfile.js",
   "scripts": {
@@ -9,12 +9,12 @@
   "author": "Neil Magee",
   "license": "ISC",
   "devDependencies": {
-    "gulp": "^3.9.1",
-    "gulp-markdown": "^3.0.0",
-    "gulp-rename": "^1.4.0",
-    "gulp-wrap": "^0.14.0"
+    "gulp": "^4.0.2",
+    "gulp-markdown": "^5.0.1",
+    "gulp-rename": "^2.0.0",
+    "gulp-wrap": "^0.15.0"
   },
   "dependencies": {
-    "highlight.js": "^9.12.0"
+    "highlight.js": "^9.18.0"
   }
 }
